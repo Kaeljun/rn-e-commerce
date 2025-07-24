@@ -1,9 +1,10 @@
-import { Text, View } from "react-native";
+import { View } from 'react-native';
+import { Text } from 'react-native-paper';
 
-export function SettingsScreen() {
+export function SettingsPage() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Settings Screen</Text>
     </View>
   );
-}   
+}
