@@ -4,6 +4,7 @@ import type {
 } from '@react-navigation/native';
 import type { StackScreenProps } from '@react-navigation/stack';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Tabs: NavigatorScreenParams<TabsParamList>;
@@ -12,7 +13,7 @@ export type RootStackParamList = {
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
-  StackScreenProps<RootStackParamList, T>;
+  NativeStackScreenProps<RootStackParamList, T>;
 
 export type TabsParamList = {
   Início: undefined;
