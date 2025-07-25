@@ -8,16 +8,19 @@ import {
   MD3LightTheme,
 } from 'react-native-paper';
 import { darkColors, lightColors } from '../themes/colors';
+import merge from 'deepmerge';
 
-export const { LightTheme, DarkTheme } = adaptNavigationTheme({
+const { LightTheme, DarkTheme } = adaptNavigationTheme({
   reactNavigationLight: NavigationLightTheme,
   reactNavigationDark: NavigationDarkTheme,
-  materialDark: {
-    ...MD3DarkTheme,
-    colors: darkColors,
-  },
-  materialLight: {
-    ...MD3LightTheme,
-    colors: lightColors,
-  },
 });
+
+export const CombinedDefaultTheme = merge(
+  { ...MD3LightTheme, colors: lightColors },
+  LightTheme,
+);
+
+export const CombinedDarkTheme = merge(
+  { ...MD3DarkTheme, colors: darkColors },
+  DarkTheme,
+);
