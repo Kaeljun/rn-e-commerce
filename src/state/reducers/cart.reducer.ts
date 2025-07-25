@@ -1,0 +1,94 @@
+import { createSlice } from '@reduxjs/toolkit';
+import type { PayloadAction } from '@reduxjs/toolkit';
+
+export type CartAction = 'add' | 'remove' | 'decrement' | 'changeByAmount';
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+export type CartProduct = Product & { quantity: number };
+
+export interface CartState {
+  products: CartProduct[];
+  totalItems: number;
+  totalPrice: number;
+}
+
+const initialState: CartState = {
+  products: [],
+  totalItems: 0,
+  totalPrice: 0,
+};
+
+export const cartSlice = createSlice({
+  name: 'cart',
+  initialState,
+  reducers: {
+    add: (state, action: PayloadAction<Product>) => {
+      const product = {
+        ...action.payload,
+        quantity: 1,
+      };
+      const existingProduct = state.products.find(p => p.id === product.id);
+      if (!existingProduct) state.products.push(product);
+      if (existingProduct) existingProduct.quantity += 1;
+      state.totalItems += product.quantity;
+      state.totalPrice += product.price * product.quantity;
+    },
+    decrement: (state, action: PayloadAction<number>) => {
+      const productId = action.payload;
+      const existingProduct = state.products.find(p => p.id === productId);
+      if (existingProduct) {
+        existingProduct.quantity -= 1;
+        state.totalItems -= 1;
+      }
+      if (existingProduct && existingProduct.quantity <= 0) {
+        state.products = state.products.filter(p => p.id !== productId);
+      }
+      state.totalPrice -= existingProduct ? existingProduct.price : 0;
+    },
+    remove: (state, action: PayloadAction<number>) => {
+      const productId = action.payload;
+      const existingProduct = state.products.find(p => p.id === productId);
+      if (existingProduct) {
+        state.totalItems -= existingProduct.quantity;
+        state.totalPrice -= existingProduct.price * existingProduct.quantity;
+        state.products = state.products.filter(p => p.id !== productId);
+      }
+      state.totalItems = Math.max(state.totalItems, 0);
+      state.totalPrice = Math.max(state.totalPrice, 0);
+    },
+    setAmount: (
+      state,
+      action: PayloadAction<{ id: number; amount: number }>,
+    ) => {
+      const { id, amount } = action.payload;
+      const existingProduct = state.products.find(p => p.id === id);
+      if (existingProduct) {
+        const difference = amount - existingProduct.quantity;
+        existingProduct.quantity = amount;
+        state.totalItems += difference;
+        state.totalPrice += existingProduct.price * difference;
+      } else if (amount > 0) {
+        const newProduct: CartProduct = {
+          id,
+          name: '',
+          price: 0,
+          quantity: amount,
+        };
+        state.products.push(newProduct);
+        state.totalItems += amount;
+      }
+      state.totalItems = Math.max(state.totalItems, 0);
+      state.totalPrice = state.products.reduce(
+        (total, product) => total + product.price * product.quantity,
+        0,
+      );
+    },
+  },
+});
+
+export const { add, decrement, setAmount, remove } = cartSlice.actions;
+
+export const cartReducer = cartSlice.reducer;

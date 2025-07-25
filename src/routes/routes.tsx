@@ -8,7 +8,7 @@ import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
 } from '../utils/adapt-navigation-theme';
-import { Icon, IconButton, Text } from 'react-native-paper';
+import { Badge, Icon, IconButton, Text } from 'react-native-paper';
 import { TabBar } from '../components/tab-bar/TabBar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ShoppingCart } from '../pages/ShoppingCart';
@@ -18,6 +18,8 @@ import {
   TabsParamList,
   TabsScreenProps,
 } from '../types/react-navigation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../state/store';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,6 +54,7 @@ const StackNavigator = () => {
 
 const TabNavigator = () => {
   const navigation = useNavigation();
+  const cart = useSelector((state: RootState) => state.cart);
   return (
     <Tab.Navigator
       initialRouteName="Início"
@@ -66,10 +69,18 @@ const TabNavigator = () => {
           ),
           headerRight: () => {
             return (
-              <IconButton
-                icon="cart"
-                onPress={() => navigation.navigate('ShoppingCart')}
-              />
+              <>
+                <IconButton
+                  icon="cart"
+                  size={26}
+                  onPress={() => navigation.navigate('ShoppingCart')}
+                />
+                <Badge
+                  visible={cart.totalItems > 0}
+                  style={{ position: 'absolute', bottom: 10, right: 5 }}
+                  children={cart.totalItems}
+                />
+              </>
             );
           },
         }}
