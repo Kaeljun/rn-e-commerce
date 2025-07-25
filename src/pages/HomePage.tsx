@@ -16,7 +16,7 @@ export function HomePage({ navigation }: TabsScreenProps<'Início'>) {
       renderItem={({ item }) => {
         const isInCart = !!cart.products.find(p => p.id === item.id);
         return (
-          <Card>
+          <Card contentStyle={{ padding: 10 }} mode="contained" key={item.id}>
             <Card.Cover source={{ uri: item.image }} />
             <Card.Title
               title={item.name}
@@ -31,28 +31,25 @@ export function HomePage({ navigation }: TabsScreenProps<'Início'>) {
                 eget facilisis urna quam vitae est.
               </Text>
             </Card.Content>
-            <Card.Actions>
-              {isInCart ? (
-                <Button
-                  icon="cart"
-                  onPress={() => {
-                    dispatch(remove(item.id));
-                  }}
-                >
-                  Remover
-                </Button>
-              ) : (
-                <></>
-              )}
+            <Card.Actions
+              style={{
+                justifyContent: 'space-between',
+              }}
+            >
               <Button
                 icon="cart"
                 onPress={() => {
-                  const value = {
-                    id: item.id,
-                    name: item.name,
-                    price: item.price,
-                  };
-                  dispatch(add(value));
+                  dispatch(remove(item.id));
+                }}
+                disabled={!isInCart}
+                style={!isInCart ? { opacity: 0 } : {}}
+              >
+                Remover
+              </Button>
+              <Button
+                icon="cart"
+                onPress={() => {
+                  dispatch(add(item));
                 }}
                 disabled={isInCart}
               >

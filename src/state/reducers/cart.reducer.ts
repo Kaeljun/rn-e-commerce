@@ -2,11 +2,14 @@ import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 
 export type CartAction = 'add' | 'remove' | 'decrement' | 'changeByAmount';
+
 type Product = {
   id: number;
   name: string;
   price: number;
+  image: string;
 };
+
 export type CartProduct = Product & { quantity: number };
 
 export interface CartState {
@@ -36,6 +39,15 @@ export const cartSlice = createSlice({
       state.totalItems += product.quantity;
       state.totalPrice += product.price * product.quantity;
     },
+    increment: (state, action: PayloadAction<number>) => {
+      const productId = action.payload;
+      const existingProduct = state.products.find(p => p.id === productId);
+      if (existingProduct) {
+        existingProduct.quantity += 1;
+        state.totalItems += 1;
+        state.totalPrice += existingProduct.price;
+      }
+    },
     decrement: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
       const existingProduct = state.products.find(p => p.id === productId);
@@ -59,36 +71,9 @@ export const cartSlice = createSlice({
       state.totalItems = Math.max(state.totalItems, 0);
       state.totalPrice = Math.max(state.totalPrice, 0);
     },
-    setAmount: (
-      state,
-      action: PayloadAction<{ id: number; amount: number }>,
-    ) => {
-      const { id, amount } = action.payload;
-      const existingProduct = state.products.find(p => p.id === id);
-      if (existingProduct) {
-        const difference = amount - existingProduct.quantity;
-        existingProduct.quantity = amount;
-        state.totalItems += difference;
-        state.totalPrice += existingProduct.price * difference;
-      } else if (amount > 0) {
-        const newProduct: CartProduct = {
-          id,
-          name: '',
-          price: 0,
-          quantity: amount,
-        };
-        state.products.push(newProduct);
-        state.totalItems += amount;
-      }
-      state.totalItems = Math.max(state.totalItems, 0);
-      state.totalPrice = state.products.reduce(
-        (total, product) => total + product.price * product.quantity,
-        0,
-      );
-    },
   },
 });
 
-export const { add, decrement, setAmount, remove } = cartSlice.actions;
+export const { add, decrement, increment, remove } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;
