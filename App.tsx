@@ -1,27 +1,23 @@
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  DefaultTheme,
-  PaperProvider,
-  Provider,
-  MD3DarkTheme,
-  MD3LightTheme,
-  ThemeProvider,
-} from 'react-native-paper';
+import { StatusBar, useColorScheme } from 'react-native';
+import { PaperProvider } from 'react-native-paper';
 import { Routes } from './src/routes/routes';
 import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
 } from './src/utils/adapt-navigation-theme';
 
+import { Provider } from 'react-redux';
+import { store } from './src/state/store';
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
-
+  const theme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
   return (
-    <PaperProvider
-      theme={isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme}
-    >
-      <Routes />
-    </PaperProvider>
+    <Provider store={store}>
+      <PaperProvider theme={theme}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <Routes />
+      </PaperProvider>
+    </Provider>
   );
 }
 
