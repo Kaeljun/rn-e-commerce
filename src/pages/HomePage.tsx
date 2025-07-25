@@ -16,7 +16,7 @@ export function HomePage({ navigation }: TabsScreenProps<'Início'>) {
       renderItem={({ item }) => {
         const isInCart = !!cart.products.find(p => p.id === item.id);
         return (
-          <Card>
+          <Card contentStyle={{ padding: 10 }}>
             <Card.Cover source={{ uri: item.image }} />
             <Card.Title
               title={item.name}
