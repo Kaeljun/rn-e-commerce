@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { HomePage } from '../pages/HomePage';
 import { SettingsPage } from '../pages/SettingsPage';
-import { Alert, useColorScheme, View } from 'react-native';
+import { useColorScheme, View } from 'react-native';
 import {
   CombinedDarkTheme,
   CombinedDefaultTheme,
@@ -12,12 +12,7 @@ import { Badge, Icon, IconButton, Text } from 'react-native-paper';
 import { TabBar } from '../components/tab-bar/TabBar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ShoppingCart } from '../pages/ShoppingCart';
-import {
-  RootStackParamList,
-  RootStackScreenProps,
-  TabsParamList,
-  TabsScreenProps,
-} from '../types/react-navigation';
+import { RootStackParamList, TabsParamList } from '../types/react-navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 
