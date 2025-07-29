@@ -15,6 +15,7 @@ import { ShoppingCart } from '../pages/ShoppingCart';
 import { RootStackParamList, TabsParamList } from '../types/react-navigation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../state/store';
+import { LoginPage } from '../pages/LoginPage';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -96,9 +97,11 @@ const TabNavigator = () => {
 export function Routes() {
   const isDarkMode = useColorScheme() === 'dark';
   const theme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
+  const user = useSelector((state: RootState) => state.user);
+
   return (
     <NavigationContainer theme={theme}>
-      <StackNavigator />
+      {user?.id ? <StackNavigator /> : <LoginPage />}
     </NavigationContainer>
   );
 }

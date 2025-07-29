@@ -1,0 +1,3 @@
+type LoginResponse = {
+  user: User;
+};
