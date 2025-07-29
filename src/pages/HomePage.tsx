@@ -4,15 +4,25 @@ import { productsList } from '../constants/products-list';
 import { TabsScreenProps } from '../types/react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
-import { add, remove } from '../state/reducers/cart.reducer';
+import { add, remove } from '../state/slices/cart-slice';
+import { useGetProductsQuery } from '../services/api.service';
 
 export function HomePage({ navigation }: TabsScreenProps<'Início'>) {
   const cart = useSelector((state: RootState) => state.cart);
+  const { data, isError, error, status } = useGetProductsQuery();
   const dispatch = useDispatch();
+
   return (
     <FlatList
       contentContainerStyle={{ padding: 10, gap: 20 }}
-      data={productsList}
+      ListEmptyComponent={() => (
+        <Text variant="bodyLarge" style={{ textAlign: 'center' }}>
+          {isError
+            ? 'Erro ao carregar produtos :('
+            : 'Nenhum produto encontrado'}
+        </Text>
+      )}
+      data={data}
       renderItem={({ item }) => {
         const isInCart = !!cart.products.find(p => p.id === item.id);
         return (
