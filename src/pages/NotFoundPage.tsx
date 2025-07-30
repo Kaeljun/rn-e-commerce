@@ -1,11 +1,10 @@
 import { View } from 'react-native';
-import { Button, Text } from 'react-native-paper';
+import { Text } from 'react-native-paper';
 
-export function SettingsPage() {
+export function NotFoundPage() {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Configurações</Text>
-      <Button>Sair</Button>
+      <Text>Página não encontrada</Text>
     </View>
   );
 }

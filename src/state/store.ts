@@ -3,11 +3,13 @@ import { cartReducer } from './slices/cart-slice';
 import { api } from '../services/api.service';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { userReducer } from './slices/user-slice';
+import { filtersReducer } from './slices/search-filters-slice';
 
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     user: userReducer,
+    filters: filtersReducer,
     [api.reducerPath]: api.reducer,
   },
   middleware: getDefaultMiddleware =>

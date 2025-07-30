@@ -7,12 +7,12 @@ import {
   Text,
   useTheme,
 } from 'react-native-paper';
-import { RootStackScreenProps } from '../types/react-navigation';
+import { RootStackScreenProps } from '../../types/react-navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../state/store';
-import { decrement, increment, remove } from '../state/slices/cart-slice';
+import { RootState } from '../../state/store';
+import { decrement, increment, remove } from '../../state/slices/cart-slice';
 import * as React from 'react';
-import { CartHeader } from '../components/tab-bar/CartHeader';
+import { CartHeader } from './components/CartHeader';
 
 export function ShoppingCart({
   navigation,
