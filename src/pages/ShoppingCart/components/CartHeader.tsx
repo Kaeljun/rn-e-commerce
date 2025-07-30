@@ -1,6 +1,6 @@
 import { Button, Surface, Text } from 'react-native-paper';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../state/store';
+import { RootState } from '../../../state/store';
 
 export function CartHeader({ onClear }: { onClear: () => void }) {
   const { totalItems, totalPrice } = useSelector(
