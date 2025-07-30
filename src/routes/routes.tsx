@@ -66,24 +66,7 @@ const TabNavigator = () => {
           tabBarIcon: ({ color }) => (
             <Icon source="home" color={color} size={26} />
           ),
-          // headerRight: () => {
-          //   return (
-          //     <>
-          //       <IconButton
-          //         icon="cart"
-          //         size={26}
-          //         onPress={() => navigation.navigate('ShoppingCart')}
-          //       />
-          //       <Badge
-          //         visible={cart.totalItems > 0}
-          //         style={{ position: 'absolute', bottom: 10, right: 5 }}
-          //         children={cart.totalItems}
-          //       />
-          //     </>
-          //   );
-          // },
           header: HomePageHeader,
-          // headerShown: false,
         }}
       />
       <Tab.Screen

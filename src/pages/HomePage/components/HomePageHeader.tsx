@@ -32,27 +32,11 @@ export const HomePageHeader = ({
     <SafeAreaView edges={['top']}>
       <View
         style={{
-          // backgroundColor: 'purple',
           alignItems: 'center',
           flexDirection: 'row',
           padding: 5,
-          // height: statusBarHeight + 100,
         }}
       >
-        {/* {isSearching ? (
-        <TextInput onBlur={() => setIsSearching(false)} />
-      ) : (
-        <>
-          <Appbar.Content title="Title" />
-          <Appbar.Action icon="magnify" onPress={() => setIsSearching(true)} />
-        </>
-      )} */}
-        {/* <Appbar.Content title="Title" /> */}
-        {/* <Appbar.Action icon="magnify" onPress={() => setIsSearching(true)} />
-      <Appbar.Action
-        icon="cart"
-        onPress={() => navigation.navigate('ShoppingCart')}
-      /> */}
         <Searchbar
           placeholder="Pesquisar"
           onChangeText={setSearchQuery}
@@ -67,7 +51,6 @@ export const HomePageHeader = ({
           onClearIconPress={() =>
             dispatch(setFilters({ ...filters, search: '' }))
           }
-          // right={() => <IconButton icon="cart" />}
         />
         <IconButton
           icon="cart"
