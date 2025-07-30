@@ -9,20 +9,39 @@ export const api = createApi({
     credentials: 'include',
   }),
   endpoints: builder => ({
-    getProducts: builder.query<Product[], Filters>({
-      query: ({ _limit, _page, search, _order, _sort }) => {
+    getProducts: builder.infiniteQuery<Product[], Filters, number>({
+      infiniteQueryOptions: {
+        initialPageParam: 1,
+        getNextPageParam(
+          lastPage,
+          _allPages,
+          lastPageParam,
+          _allPageParams,
+          queryArg,
+        ) {
+          if (lastPage.length < queryArg._limit) return undefined;
+          return lastPageParam + 1;
+        },
+        getPreviousPageParam(
+          _firstPage,
+          _allPages,
+          firstPageParam,
+          _allPageParams,
+          _queryArg,
+        ) {
+          return firstPageParam > 0 ? firstPageParam - 1 : undefined;
+        },
+      },
+      query: ({ pageParam, queryArg }) => {
+        console.log('queryArg', queryArg);
         const params = new URLSearchParams();
-        params.set('_page', _page.toString());
-        params.set('_limit', _limit.toString());
-        params.set('_sort', _sort);
-        params.set('_order', _order);
-        if (search?.trim()) params.set('name', search);
+        params.set('_page', pageParam.toString());
+        params.set('_limit', queryArg._limit.toString());
+        params.set('_sort', queryArg._sort);
+        params.set('_order', queryArg._order);
+        if (queryArg.search?.trim()) params.set('name', queryArg.search);
         return `/api/products?${params.toString()}`;
       },
-      merge: (currentCache, newItems) => {
-        currentCache.push(...newItems);
-      },
-      // serializeQueryArgs: ({ endpointName }) => endpointName,
     }),
     getProductById: builder.query({
       query: (id: string) => `api/products/${id}`,
@@ -54,7 +73,7 @@ export const api = createApi({
 });
 
 export const {
-  useGetProductsQuery,
+  useGetProductsInfiniteQuery,
   useGetProductByIdQuery,
   useGetAuthQuery,
   useGetRefreshQuery,
