@@ -13,13 +13,15 @@ import { TabBar } from '../components/tab-bar/TabBar';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { ShoppingCart } from '../pages/ShoppingCart/ShoppingCart';
 import { RootStackParamList, TabsParamList } from '../types/react-navigation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../state/store';
 import { LoginPage } from '../pages/LoginPage';
 import { useGetAuthQuery } from '../services/api.service';
 import { NotFoundPage } from '../pages/NotFoundPage';
 import { HomePageHeader } from '../pages/HomePage/components/HomePageHeader';
 import { HomeFilterPage } from '../pages/HomeFilterPage';
+import { getCartState } from '../utils/storage';
+import { setCart } from '../state/slices/cart-slice';
 
 const Tab = createBottomTabNavigator<TabsParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -52,8 +54,13 @@ const StackNavigator = () => {
 };
 
 const TabNavigator = () => {
-  const navigation = useNavigation();
-  const cart = useSelector((state: RootState) => state.cart);
+  const dispatch = useDispatch();
+  getCartState().then(cart => {
+    if (cart) {
+      dispatch(setCart(cart));
+    }
+  });
+
   return (
     <Tab.Navigator
       initialRouteName="Início"

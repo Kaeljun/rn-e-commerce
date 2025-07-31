@@ -71,9 +71,10 @@ export const cartSlice = createSlice({
       state.totalItems = Math.max(state.totalItems, 0);
       state.totalPrice = Math.max(state.totalPrice, 0);
     },
+    setCart: (state, action: PayloadAction<CartState>) => action.payload,
   },
 });
 
-export const { add, decrement, increment, remove } = cartSlice.actions;
+export const { add, decrement, increment, remove, setCart } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;
