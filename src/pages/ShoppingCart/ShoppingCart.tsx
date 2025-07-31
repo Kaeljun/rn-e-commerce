@@ -58,9 +58,23 @@ export function ShoppingCart({
               subtitle={`R$ ${item.price.toFixed(2)}`}
               titleVariant="titleMedium"
               subtitleVariant="titleMedium"
+              right={({ size }) => {
+                if (item.quantity > 1)
+                  return (
+                    <IconButton
+                      icon="trash-can"
+                      onPress={() => {
+                        if (item.quantity === 1) dispatch(remove(item.id));
+                        else dispatch(decrement(item.id));
+                      }}
+                      mode="contained"
+                      size={size}
+                    />
+                  );
+              }}
             />
             <Card.Actions>
-              <Surface style={styles.actions}>
+              <View style={styles.actions}>
                 <IconButton
                   icon={item.quantity > 1 ? 'minus' : 'trash-can'}
                   onPress={() => {
@@ -77,7 +91,7 @@ export function ShoppingCart({
                   }}
                   mode="contained"
                 />
-              </Surface>
+              </View>
             </Card.Actions>
           </Card>
         </Surface>
