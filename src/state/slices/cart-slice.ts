@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { resetStore } from '../actions';
 import { getCartState } from '../../utils/storage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type CartAction = 'add' | 'remove' | 'decrement' | 'changeByAmount';
 
@@ -23,6 +24,12 @@ export interface CartState {
 export const loadCart = createAsyncThunk(
   'cart/load',
   async (userId: string) => await getCartState(userId),
+);
+
+export const clearCart = createAsyncThunk(
+  'cart/clear',
+  async (userId: string) =>
+    await AsyncStorage.removeItem(`${userId}-cart-state`),
 );
 
 const initialState: CartState = {
@@ -75,15 +82,14 @@ export const cartSlice = createSlice({
       }
     },
     setCart: (_state, action: PayloadAction<CartState>) => action.payload,
-    clearCart: () => initialState,
   },
   extraReducers: builder => {
     builder.addCase(loadCart.fulfilled, (_, action) => action.payload);
     builder.addCase(resetStore, () => initialState);
+    builder.addCase(clearCart.fulfilled, () => initialState);
   },
 });
 
-export const { add, decrement, increment, remove, setCart, clearCart } =
-  cartSlice.actions;
+export const { add, decrement, increment, remove, setCart } = cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;
