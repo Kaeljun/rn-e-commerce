@@ -65,7 +65,7 @@ const StackNavigator = () => {
         options={{ headerShown: true }}
       />
       <Stack.Screen
-        name="Novo endereco"
+        name="Novo endereço"
         component={AddAddressPage}
         options={{ headerShown: true }}
       />

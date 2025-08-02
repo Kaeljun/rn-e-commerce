@@ -10,7 +10,8 @@ import {
 } from '@reduxjs/toolkit/query';
 import { resetStore } from '../state/actions';
 import { loadAddresses } from '../state/slices/address-slice';
-import { loadCart } from '../state/slices/cart-slice';
+import { clearCart, loadCart } from '../state/slices/cart-slice';
+import { setShowFeedback } from '../state/slices/feedback-slice';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'http://192.168.15.8:3000/',
@@ -98,6 +99,7 @@ export const api = createApi({
           dispatch(loadAddresses(data.user.id));
           dispatch(loadCart(data.user.id));
         },
+        // errorResponseSchema: {}
       },
     ),
     getAuth: builder.query<User, void>({
@@ -119,6 +121,10 @@ export const api = createApi({
         body,
       }),
       invalidatesTags: ['Order'],
+      async onQueryStarted(_, { dispatch, queryFulfilled }) {
+        dispatch(clearCart((await queryFulfilled).data.userId));
+        dispatch(setShowFeedback({ visible: true }));
+      },
     }),
     getOrder: builder.query<OrderResponse[], void>({
       query: () => 'api/order',
