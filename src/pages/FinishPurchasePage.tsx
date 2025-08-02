@@ -36,17 +36,11 @@ export const FinishPurchasePage = ({
 
   const handlePurchase = () => {
     mutate(order).then(result => {
-      dispatch(clearCart());
       //@ts-ignore
       navigation.popToTop();
     });
   };
 
-  const [visible, setVisible] = useState(false);
-
-  const onToggleSnackBar = () => setVisible(!visible);
-
-  const onDismissSnackBar = () => setVisible(false);
   return (
     <SafeAreaView edges={['bottom']}>
       <FlatList
@@ -147,18 +141,6 @@ export const FinishPurchasePage = ({
               >
                 {result.isLoading ? <ActivityIndicator /> : 'Finalizar pedido'}
               </Button>
-              <Snackbar
-                visible={visible}
-                onDismiss={onDismissSnackBar}
-                action={{
-                  label: 'Undo',
-                  onPress: () => {
-                    // Do something
-                  },
-                }}
-              >
-                Hey there! I'm a Snackbar.
-              </Snackbar>
             </View>
           </>
         )}

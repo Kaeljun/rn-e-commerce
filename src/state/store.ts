@@ -8,6 +8,7 @@ import { cartListener } from './middleware/cart-persistence-middleware';
 import { orderReducer } from './slices/order-slice';
 import { addressApi } from '../services/address.service';
 import { addressReducer } from './slices/address-slice';
+import { feedbackReducer } from './slices/feedback-slice';
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     filters: filtersReducer,
     order: orderReducer,
     addresses: addressReducer,
+    feedback: feedbackReducer,
     [api.reducerPath]: api.reducer,
     [addressApi.reducerPath]: addressApi.reducer,
   },
