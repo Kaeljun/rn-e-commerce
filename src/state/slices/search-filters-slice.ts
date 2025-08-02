@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { resetStore } from '../actions';
 
 export type Filters = {
   search: string;
@@ -22,6 +23,9 @@ const filtersSlice = createSlice({
   reducers: {
     setFilters: (_state, action: PayloadAction<Filters>) => action.payload,
     clear: () => initialState,
+  },
+  extraReducers: builder => {
+    builder.addCase(resetStore, () => initialState);
   },
 });
 

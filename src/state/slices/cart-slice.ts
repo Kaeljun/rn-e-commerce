@@ -1,5 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
+import { resetStore } from '../actions';
+import { getCartState } from '../../utils/storage';
 
 export type CartAction = 'add' | 'remove' | 'decrement' | 'changeByAmount';
 
@@ -18,6 +20,11 @@ export interface CartState {
   totalPrice: number;
 }
 
+export const loadCart = createAsyncThunk(
+  'cart/load',
+  async (userId: string) => await getCartState(userId),
+);
+
 const initialState: CartState = {
   products: [],
   totalItems: 0,
@@ -34,10 +41,11 @@ export const cartSlice = createSlice({
         quantity: 1,
       };
       const existingProduct = state.products.find(p => p.id === product.id);
-      if (!existingProduct) state.products.push(product);
-      if (existingProduct) existingProduct.quantity += 1;
-      state.totalItems += product.quantity;
-      state.totalPrice += product.price * product.quantity;
+      if (!existingProduct) {
+        state.products.push(product);
+        state.totalItems += 1;
+        state.totalPrice += product.price;
+      }
     },
     increment: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
@@ -51,14 +59,11 @@ export const cartSlice = createSlice({
     decrement: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
       const existingProduct = state.products.find(p => p.id === productId);
-      if (existingProduct) {
+      if (existingProduct && existingProduct.quantity > 1) {
         existingProduct.quantity -= 1;
         state.totalItems -= 1;
+        state.totalPrice -= existingProduct.price;
       }
-      if (existingProduct && existingProduct.quantity <= 0) {
-        state.products = state.products.filter(p => p.id !== productId);
-      }
-      state.totalPrice -= existingProduct ? existingProduct.price : 0;
     },
     remove: (state, action: PayloadAction<number>) => {
       const productId = action.payload;
@@ -68,13 +73,17 @@ export const cartSlice = createSlice({
         state.totalPrice -= existingProduct.price * existingProduct.quantity;
         state.products = state.products.filter(p => p.id !== productId);
       }
-      state.totalItems = Math.max(state.totalItems, 0);
-      state.totalPrice = Math.max(state.totalPrice, 0);
     },
-    setCart: (state, action: PayloadAction<CartState>) => action.payload,
+    setCart: (_state, action: PayloadAction<CartState>) => action.payload,
+    clearCart: () => initialState,
+  },
+  extraReducers: builder => {
+    builder.addCase(loadCart.fulfilled, (_, action) => action.payload);
+    builder.addCase(resetStore, () => initialState);
   },
 });
 
-export const { add, decrement, increment, remove, setCart } = cartSlice.actions;
+export const { add, decrement, increment, remove, setCart, clearCart } =
+  cartSlice.actions;
 
 export const cartReducer = cartSlice.reducer;

@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { resetStore } from '../actions';
 
 const initialState = {
   id: '',
-  name: '',
   email: '',
 };
 
@@ -12,6 +12,9 @@ const userSlice = createSlice({
   reducers: {
     setUser: (_state, action: PayloadAction<User>) => action.payload,
     clearUser: () => initialState,
+  },
+  extraReducers: builder => {
+    builder.addCase(resetStore, () => initialState);
   },
 });
 

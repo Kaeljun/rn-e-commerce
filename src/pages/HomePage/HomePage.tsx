@@ -12,12 +12,15 @@ export function HomePage({ navigation }: TabsScreenProps<'Início'>) {
 
   const { data, isError, fetchNextPage, hasNextPage } =
     useGetProductsInfiniteQuery(filters);
-  console.log('data', data);
   const dispatch = useDispatch();
   const theme = useTheme();
   return (
     <FlatList
-      contentContainerStyle={{ gap: 10 }}
+      contentContainerStyle={{
+        gap: 10,
+        paddingHorizontal: 10,
+        paddingBottom: 10,
+      }}
       onEndReached={() => {
         if (hasNextPage) fetchNextPage();
       }}
@@ -62,6 +65,6 @@ export function HomePage({ navigation }: TabsScreenProps<'Início'>) {
       )}
       data={data?.pages.flatMap(item => item)}
       renderItem={({ ...props }) => <ProductCard {...props.item} />}
-    ></FlatList>
+    />
   );
 }

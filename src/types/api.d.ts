@@ -1,6 +1,5 @@
 type User = {
   id: string;
-  name: string;
   email: string;
 };
 
@@ -9,11 +8,4 @@ type Product = {
   name: string;
   price: number;
   image: string;
-};
-
-type Order = {
-  id: number;
-  userId: number;
-  productIds: number[];
-  totalAmount: number;
 };

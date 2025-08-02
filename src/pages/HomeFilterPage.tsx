@@ -40,7 +40,6 @@ export const HomeFilterPage = ({
   });
 
   const [selected, setSelected] = useState(onMountValue);
-  console.log('selected', selected);
 
   return (
     <View
