@@ -1,11 +1,21 @@
 import { Button, Surface, Text } from 'react-native-paper';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../state/store';
+import { useNavigation } from '@react-navigation/native';
+import { setOrderProducts } from '../../../state/slices/order-slice';
 
 export function CartHeader({ onClear }: { onClear: () => void }) {
   const { totalItems, totalPrice } = useSelector(
     (state: RootState) => state.cart,
   );
+  const cart = useSelector((state: RootState) => state.cart);
+  const order = useSelector((state: RootState) => state.order);
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const handleContinue = () => {
+    dispatch(setOrderProducts(cart));
+    navigation.navigate('Método de entrega');
+  };
   return (
     <Surface
       style={{
@@ -24,8 +34,12 @@ export function CartHeader({ onClear }: { onClear: () => void }) {
       <Button icon="delete" onPress={onClear} mode="contained">
         Limpar carrinho
       </Button>
-      <Button icon="arrow-right" mode="contained-tonal">
-        Prosseguir com compra
+      <Button
+        icon="arrow-right"
+        mode="contained-tonal"
+        onPress={handleContinue}
+      >
+        Prosseguir para entrega
       </Button>
     </Surface>
   );

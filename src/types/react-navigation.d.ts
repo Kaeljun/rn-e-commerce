@@ -8,9 +8,14 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 
 export type RootStackParamList = {
   Tabs: NavigatorScreenParams<TabsParamList>;
-  ShoppingCart: undefined;
+  Carrinho: undefined;
   Filtros: undefined;
   NotFound: undefined;
+  'Método de entrega': undefined;
+  'Método de pagamento': undefined;
+  'Finalizar compra': undefined;
+  'Histórico de pedidos': undefined;
+  'Novo endereço': undefined;
 };
 
 export type RootStackScreenProps<T extends keyof RootStackParamList> =

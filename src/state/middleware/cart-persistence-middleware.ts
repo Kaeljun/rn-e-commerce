@@ -9,7 +9,7 @@ const cartActionMatchers = isAnyOf(add, remove, decrement, increment);
 cartListener.startListening({
   matcher: cartActionMatchers,
   effect: async (_action, listenerApi) => {
-    const { cart } = listenerApi.getState() as RootState;
-    await AsyncStorage.setItem('cart-state', JSON.stringify(cart));
+    const { cart, user } = listenerApi.getState() as RootState;
+    await AsyncStorage.setItem(`${user.id}-cart-state`, JSON.stringify(cart));
   },
 });

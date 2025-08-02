@@ -1,3 +1,0 @@
-type LoginResponse = {
-  user: User;
-};

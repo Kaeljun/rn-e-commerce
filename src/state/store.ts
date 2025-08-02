@@ -5,13 +5,19 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 import { userReducer } from './slices/user-slice';
 import { filtersReducer } from './slices/search-filters-slice';
 import { cartListener } from './middleware/cart-persistence-middleware';
+import { orderReducer } from './slices/order-slice';
+import { addressApi } from '../services/address.service';
+import { addressReducer } from './slices/address-slice';
 
 export const store = configureStore({
   reducer: {
     cart: cartReducer,
     user: userReducer,
     filters: filtersReducer,
+    order: orderReducer,
+    addresses: addressReducer,
     [api.reducerPath]: api.reducer,
+    [addressApi.reducerPath]: addressApi.reducer,
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware()

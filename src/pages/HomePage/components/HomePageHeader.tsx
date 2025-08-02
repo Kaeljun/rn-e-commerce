@@ -1,28 +1,13 @@
 import { BottomTabHeaderProps } from '@react-navigation/bottom-tabs';
 import { useState } from 'react';
 import { View } from 'react-native';
-import {
-  Appbar,
-  Badge,
-  IconButton,
-  Searchbar,
-  TextInput,
-} from 'react-native-paper';
-import {
-  SafeAreaView,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import { Badge, IconButton, Searchbar } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../../state/store';
 import { setFilters } from '../../../state/slices/search-filters-slice';
 
-export const HomePageHeader = ({
-  layout,
-  navigation,
-  options,
-  route,
-}: BottomTabHeaderProps) => {
-  const [isSearching, setIsSearching] = useState(false);
+export const HomePageHeader = ({ navigation }: BottomTabHeaderProps) => {
   const [search, setSearchQuery] = useState('');
   const cart = useSelector((state: RootState) => state.cart);
   const filters = useSelector((state: RootState) => state.filters);
@@ -54,7 +39,7 @@ export const HomePageHeader = ({
         />
         <IconButton
           icon="cart"
-          onPress={() => navigation.navigate('ShoppingCart')}
+          onPress={() => navigation.navigate('Carrinho')}
         />
         <Badge
           visible={cart.totalItems > 0}
