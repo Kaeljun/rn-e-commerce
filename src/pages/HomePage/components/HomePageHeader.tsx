@@ -28,7 +28,7 @@ export const HomePageHeader = ({ navigation }: BottomTabHeaderProps) => {
           value={search}
           style={{ width: 300 }}
           mode="bar"
-          onIconPress={e => dispatch(setFilters({ ...filters, search }))}
+          onIconPress={() => dispatch(setFilters({ ...filters, search }))}
           onKeyPress={key => {
             if (key.nativeEvent.key === 'Enter')
               dispatch(setFilters({ ...filters, search }));
@@ -37,16 +37,18 @@ export const HomePageHeader = ({ navigation }: BottomTabHeaderProps) => {
             dispatch(setFilters({ ...filters, search: '' }))
           }
         />
-        <IconButton
-          icon="cart"
-          onPress={() => navigation.navigate('Carrinho')}
-        />
-        <Badge
-          visible={cart.totalItems > 0}
-          style={{ position: 'absolute', bottom: 10, right: 10 }}
-          children={cart.totalItems}
-          pointerEvents="none"
-        />
+        <View>
+          <IconButton
+            icon="cart"
+            onPress={() => navigation.navigate('Carrinho')}
+          />
+          <Badge
+            visible={cart.totalItems > 0}
+            style={{ position: 'absolute', bottom: 10, right: 10 }}
+            children={cart.totalItems}
+            pointerEvents="none"
+          />
+        </View>
       </View>
     </SafeAreaView>
   );
